@@ -13,13 +13,18 @@ Route::middleware(['throttle:60,1'])->group(function () {
         return $request->user();
     })->middleware('auth:sanctum');
 
-    // Admin Authentication Routes (PUBLIC)
+    // Admin Authentication Routes
     Route::prefix('admin')->group(function () {
+        // Public route
         Route::middleware(['throttle:20,1'])->post('/login', [AdminController::class, 'login']); // Stricter limit for login
-        Route::post('/logout', [AdminController::class, 'logout']);
-        Route::get('/verify-token', [AdminController::class, 'verifyToken']);
-        Route::get('/profile', [AdminController::class, 'profile']);
-        Route::put('/change-password', [AdminController::class, 'changePassword']);
+        
+        // Protected routes (require valid admin token)
+        Route::middleware(['admin.auth'])->group(function () {
+            Route::post('/logout', [AdminController::class, 'logout']);
+            Route::get('/verify-token', [AdminController::class, 'verifyToken']);
+            Route::get('/profile', [AdminController::class, 'profile']);
+            Route::put('/change-password', [AdminController::class, 'changePassword']);
+        });
     });
 
     // Pelapor Routes

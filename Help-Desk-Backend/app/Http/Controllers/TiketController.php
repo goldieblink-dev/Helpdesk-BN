@@ -74,7 +74,7 @@ class TiketController extends Controller
             }
 
             // Get or create pelapor
-            $pelapor = Pelapor::firstOrCreate(
+            $pelapor = Pelapor::updateOrCreate(
                 ['no_telepon' => $request->no_telepon],
                 [
                     'nama' => $request->nama,

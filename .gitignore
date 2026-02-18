@@ -1,0 +1,21 @@
+# Docker
+docker-compose
+
+# Environment
+.env
+
+# SQL
+update_database.sql
+helpdesk_mysql_setup.sql
+helpdesk_phpmyadmin.sql
+API_TEST_RESULTS.md
+COMPLETION_REPORT.md
+CROSS-CHECK-REPORT.md
+FILES_GENERATED.md
+FINAL_STATUS.md
+INVENTORY-REPORT.md
+MYSQL_MIGRATION_README.md
+MYSQL_QUICK_START.md
+MYSQL_SETUP_GUIDE.md
+PHPMYADMIN_GUIDE.md
+SETUP_INDEX.md

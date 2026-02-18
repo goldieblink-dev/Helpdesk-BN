@@ -1,0 +1,95 @@
+services:
+  # Backend App Service (PHP-FPM)
+  app:
+    build:
+      context: ./Help-Desk-Backend
+      dockerfile: Dockerfile
+    image: helpdesk-backend
+    container_name: helpdesk-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./Help-Desk-Backend:/var/www
+    depends_on:
+      - mysql
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: helpdesk
+      DB_USERNAME: root
+      DB_PASSWORD: rootpassword
+    networks:
+      - helpdesk-network
+
+  # Nginx Service (Web Server)
+  nginx:
+    image: nginx:alpine
+    container_name: helpdesk-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./Help-Desk-Backend:/var/www
+      - ./Help-Desk-Backend/docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - helpdesk-network
+
+  # Frontend Service (React)
+  frontend:
+    build:
+      context: ./Help-Desk-Frontend
+      dockerfile: Dockerfile
+    image: helpdesk-frontend
+    container_name: helpdesk-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Help-Desk-Frontend:/app
+      - /app/node_modules
+    networks:
+      - helpdesk-network
+    environment:
+      # Use the user's browser to access the backend, so it should be localhost:8000
+      VITE_API_BASE_URL: http://localhost:8000/api
+      VITE_API_TARGET: http://nginx:80
+
+  # Database Service (MySQL)
+  mysql:
+    image: mysql:8.0
+    container_name: helpdesk-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: helpdesk
+    ports:
+      - "3307:3306"
+    volumes:
+      - helpdesk-mysql-data:/var/lib/mysql
+    networks:
+      - helpdesk-network
+
+  # Database Management (phpMyAdmin)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: helpdesk-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - helpdesk-network
+
+networks:
+  helpdesk-network:
+    driver: bridge
+
+volumes:
+  helpdesk-mysql-data:

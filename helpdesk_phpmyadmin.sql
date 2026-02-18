@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS admin (
   password varchar(255) NOT NULL,
   nama varchar(255) NOT NULL,
   email varchar(255) NOT NULL UNIQUE,
+  api_token varchar(80) UNIQUE DEFAULT NULL,
   created_at timestamp NULL DEFAULT NULL,
   updated_at timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -137,6 +138,21 @@ CREATE TABLE IF NOT EXISTS kategori (
   deskripsi text DEFAULT NULL,
   created_at timestamp NULL DEFAULT NULL,
   updated_at timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- TABLE: lokasi
+-- ============================================================
+CREATE TABLE IF NOT EXISTS lokasi (
+  id bigint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  kategori_id bigint unsigned NOT NULL,
+  nama varchar(255) NOT NULL,
+  deskripsi varchar(255) DEFAULT NULL,
+  created_at timestamp NULL DEFAULT NULL,
+  updated_at timestamp NULL DEFAULT NULL,
+  KEY lokasi_kategori_id_foreign (kategori_id),
+  CONSTRAINT lokasi_kategori_id_foreign 
+    FOREIGN KEY (kategori_id) REFERENCES kategori(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
@@ -169,6 +185,7 @@ CREATE TABLE IF NOT EXISTS tiket (
   deskripsi text NOT NULL,
   status enum('menunggu','diproses','selesai') NOT NULL DEFAULT 'menunggu',
   catatan_admin text DEFAULT NULL,
+  alasan_penolakan text DEFAULT NULL,
   tanggal date NOT NULL,
   created_at timestamp NULL DEFAULT NULL,
   updated_at timestamp NULL DEFAULT NULL,
@@ -228,6 +245,24 @@ INSERT INTO kategori (nama, slug, deskripsi, created_at, updated_at) VALUES
 ('Website', 'website', 'Masalah pada website-website milik sekolah', NOW(), NOW()),
 ('Internet', 'internet', 'Masalah pada koneksi jaringan dan WiFi', NOW(), NOW()),
 ('Lab. Komputer', 'lab-komputer', 'Masalah pada perangkat di laboratorium komputer', NOW(), NOW());
+
+-- ============================================================
+-- INSERT DATA: LOKASI (Locations)
+-- ============================================================
+-- KATEGORI: SERVER
+INSERT INTO lokasi (kategori_id, nama, deskripsi, created_at, updated_at) VALUES
+((SELECT id FROM kategori WHERE slug='server'), 'Ruang Server Utama (Gedung A)', 'Server utama sekolah di Gedung A Lantai 2', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='server'), 'Ruang Server Cadangan (Gedung B)', 'Backup server di Gedung B Lantai 1', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='server'), 'Rak Server TU', 'Rak server kecil di ruang Tata Usaha', NOW(), NOW());
+
+-- KATEGORI: INTERNET
+INSERT INTO lokasi (kategori_id, nama, deskripsi, created_at, updated_at) VALUES
+((SELECT id FROM kategori WHERE slug='internet'), 'Gedung A - Lantai 1', 'Area kelas X dan Ruang Guru', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='internet'), 'Gedung A - Lantai 2', 'Area kelas XI dan Lab Komputer', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='internet'), 'Gedung B - Lantai 1', 'Area kelas XII dan Perpustakaan', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='internet'), 'Gedung B - Lantai 2', 'Area Aula dan Ruang Rapat', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='internet'), 'Area Kantin', 'Hotspot area kantin sekolah', NOW(), NOW()),
+((SELECT id FROM kategori WHERE slug='internet'), 'Pos Satpam', 'Jaringan CCTV dan Pos Satpam', NOW(), NOW());
 
 -- ============================================================
 -- INSERT DATA: JENIS_PERMASALAHAN (Problem Types)
