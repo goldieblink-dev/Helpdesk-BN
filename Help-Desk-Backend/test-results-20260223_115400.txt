@@ -1,0 +1,70 @@
+╔════════════════════════════════════════════════════════════════╗
+║         HELP DESK API COMPREHENSIVE TEST SUITE                ║
+║         Date: 2026-02-23 11:54:00                       ║
+╚════════════════════════════════════════════════════════════════╝
+
+[1;33mChecking server connection...[0m
+[0;32m✓ Server is running[0m
+
+[1;33m═══════════════════════════════════════════════════[0m
+[1;33m1. AUTHENTICATION TESTS[0m
+[1;33m═══════════════════════════════════════════════════[0m
+
+Testing: Login with valid credentials ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Login berhasil","token":"103419937b8cba04ad292c42a24f17cbebf7e1c89794901449873cb9e2a35cea","admin":{"id":1,"username":"admin","nama":"Administrator","email":"admin@helpdesk.sch.id"}}
+
+Extracted Token: 5aa28c31a52d510e9c85fd3a4690defb2a990226ba292d3bc3afad6e9feb1c8d
+Testing: Login with invalid password ... [0;32mPASS[0m (HTTP 401)
+Response: {"success":false,"message":"Username atau password salah"}
+
+Testing: Verify token (valid) ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Token valid","admin":{"id":1,"username":"admin","nama":"Administrator","email":"admin@helpdesk.sch.id"}}
+
+Testing: Get admin profile ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Profile berhasil diambil","data":{"id":1,"username":"admin","nama":"Administrator","email":"admin@helpdesk.sch.id","created_at":"2026-02-18T20:24:34.000000Z"}}
+
+Testing: Logout ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Logout berhasil"}
+
+[1;33m═══════════════════════════════════════════════════[0m
+[1;33m2. KATEGORI TESTS[0m
+[1;33m═══════════════════════════════════════════════════[0m
+
+Testing: Get all categories ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Data kategori berhasil diambil","data":[{"id":1,"nama":"Server","slug":"server","deskripsi":"Masalah pada infrastruktur server sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z","jenis_permasalahan":[{"id":1,"kategori_id":1,"nama":"Server dari VPS","deskripsi":"Gangguan pada Virtual Private Server yang digunakan untuk hosting aplikasi atau layanan sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":2,"kategori_id":1,"nama":"Server WS","deskripsi":"Masalah pada Web Server sekolah seperti error 500, timeout, SSL certificate expired","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":3,"kategori_id":1,"nama":"Server PK","deskripsi":"Kendala pada server Pusat Komputer yang mendukung jaringan internal sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]},{"id":2,"nama":"Website","slug":"website","deskripsi":"Masalah pada website-website milik sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z","jenis_permasalahan":[{"id":4,"kategori_id":2,"nama":"PKL \/ Prakerin","deskripsi":"Masalah pada website sistem informasi Praktek Kerja Lapangan","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":5,"kategori_id":2,"nama":"Web Perpus","deskripsi":"Gangguan pada website perpustakaan digital sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":6,"kategori_id":2,"nama":"Web Sekolah","deskripsi":"Kendala pada website utama sekolah seperti halaman tidak bisa diakses","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":7,"kategori_id":2,"nama":"Web Ujian","deskripsi":"Masalah pada platform ujian online seperti timer error, logout otomatis","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":8,"kategori_id":2,"nama":"Web SPMB","deskripsi":"Kendala pada sistem pendaftaran SPMB seperti form error, upload gagal","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":9,"kategori_id":2,"nama":"Karomah \/ Web Ramadan","deskripsi":"Gangguan pada website\/aplikasi Karomah atau Web Ramadan sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":10,"kategori_id":2,"nama":"Web Help Desk","deskripsi":"Masalah pada sistem Help Desk sendiri","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]},{"id":3,"nama":"Internet","slug":"internet","deskripsi":"Masalah pada koneksi jaringan dan WiFi","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z","jenis_permasalahan":[{"id":11,"kategori_id":3,"nama":"WiFi","deskripsi":"Koneksi WiFi lambat, tidak terdeteksi, atau tidak bisa connect","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]},{"id":4,"nama":"Lab. Komputer","slug":"lab-komputer","deskripsi":"Masalah pada perangkat di laboratorium komputer","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z","jenis_permasalahan":[{"id":12,"kategori_id":4,"nama":"Lab 1","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 1","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":13,"kategori_id":4,"nama":"Lab 2","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 2","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":14,"kategori_id":4,"nama":"Lab 3","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 3","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":15,"kategori_id":4,"nama":"Lab 4","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 4","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":16,"kategori_id":4,"nama":"Lab 5","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 5","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":17,"kategori_id":4,"nama":"Lab 6","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 6","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":18,"kategori_id":4,"nama":"Lab 7","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 7","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]}]}
+
+Testing: Get category by slug (server) ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Detail kategori berhasil diambil","data":{"id":1,"nama":"Server","slug":"server","deskripsi":"Masalah pada infrastruktur server sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z","jenis_permasalahan":[{"id":1,"kategori_id":1,"nama":"Server dari VPS","deskripsi":"Gangguan pada Virtual Private Server yang digunakan untuk hosting aplikasi atau layanan sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":2,"kategori_id":1,"nama":"Server WS","deskripsi":"Masalah pada Web Server sekolah seperti error 500, timeout, SSL certificate expired","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":3,"kategori_id":1,"nama":"Server PK","deskripsi":"Kendala pada server Pusat Komputer yang mendukung jaringan internal sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]}}
+
+Testing: Get jenis permasalahan for kategori 1 ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Data jenis permasalahan berhasil diambil","data":[{"id":1,"kategori_id":1,"nama":"Server dari VPS","deskripsi":"Gangguan pada Virtual Private Server yang digunakan untuk hosting aplikasi atau layanan sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":2,"kategori_id":1,"nama":"Server WS","deskripsi":"Masalah pada Web Server sekolah seperti error 500, timeout, SSL certificate expired","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":3,"kategori_id":1,"nama":"Server PK","deskripsi":"Kendala pada server Pusat Komputer yang mendukung jaringan internal sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]}
+
+Testing: Get single category (id=1) ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Detail kategori berhasil diambil","data":{"id":1,"nama":"Server","slug":"server","deskripsi":"Masalah pada infrastruktur server sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z","jenis_permasalahan":[{"id":1,"kategori_id":1,"nama":"Server dari VPS","deskripsi":"Gangguan pada Virtual Private Server yang digunakan untuk hosting aplikasi atau layanan sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":2,"kategori_id":1,"nama":"Server WS","deskripsi":"Masalah pada Web Server sekolah seperti error 500, timeout, SSL certificate expired","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},{"id":3,"kategori_id":1,"nama":"Server PK","deskripsi":"Kendala pada server Pusat Komputer yang mendukung jaringan internal sekolah","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"}]}}
+
+[1;33m═══════════════════════════════════════════════════[0m
+[1;33m3. TIKET TESTS[0m
+[1;33m═══════════════════════════════════════════════════[0m
+
+Testing: Get all tickets ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Data tiket berhasil diambil","data":{"current_page":1,"data":[{"id":2,"nomor_tiket":"BN-19022026-00001","pelapor_id":2,"kategori_id":4,"jenis_permasalahan_id":15,"admin_id":null,"lokasi_gedung":null,"link_url":null,"deskripsi":"ada masalah di Komputer Lab4 saya membutuhkan teknisi","status":"menunggu","catatan_admin":null,"alasan_penolakan":null,"tanggal":"2026-02-19T00:00:00.000000Z","created_at":"2026-02-19T15:33:28.000000Z","updated_at":"2026-02-19T15:33:28.000000Z","pelapor":{"id":2,"nama":"Rendy Julkifli Usman","no_telepon":"081573802608","jabatan":"masyarakat_sekolah","created_at":"2026-02-19T15:33:28.000000Z","updated_at":"2026-02-19T15:33:28.000000Z"},"kategori":{"id":4,"nama":"Lab. Komputer","slug":"lab-komputer","deskripsi":"Masalah pada perangkat di laboratorium komputer","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},"jenis_permasalahan":{"id":15,"kategori_id":4,"nama":"Lab 4","deskripsi":"Masalah pada perangkat di Laboratorium Komputer 4","created_at":"2026-02-18T20:24:34.000000Z","updated_at":"2026-02-18T20:24:34.000000Z"},"admin":null,"lampiran":[{"id":1,"tiket_id":2,"file_path":"complaints\/BN-19022026-00001\/OEsGeUOXY2YPa4n4REOiMiR6VKc9kPlxCX5WYhOW.png","file_name":"Screenshot_19-Feb_15-59-38_12895.png","file_size":400366,"created_at":"2026-02-19T15:33:28.000000Z","updated_at":"2026-02-19T15:33:28.000000Z"}]}],"first_page_url":"http:\/\/localhost:8001\/api\/tiket?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost:8001\/api\/tiket?page=1","links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"http:\/\/localhost:8001\/api\/tiket?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"next_page_url":null,"path":"http:\/\/localhost:8001\/api\/tiket","per_page":10,"prev_page_url":null,"to":1,"total":1}}
+
+Testing: Get ticket statistics ... [0;32mPASS[0m (HTTP 200)
+Response: {"success":true,"message":"Statistik berhasil diambil","data":{"bulan":2,"tahun":2026,"total":1,"menunggu":1,"diproses":0,"selesai":0,"ditolak":0,"completion_rate":0}}
+
+Testing: Search tickets by phone (081234567890) ... [0;31mFAIL[0m (Expected HTTP 200, got 404)
+Response: {"success":false,"message":"Tiket dengan no telepon tersebut tidak ditemukan","data":[]}
+
+
+╔════════════════════════════════════════════════════════════════╗
+║                        TEST SUMMARY                           ║
+║────────────────────────────────────────────────────────────────║
+║ Total Tests: 12                                              ║
+║ Passed: \033[0;32m11\033[0m                                  ║
+║ Failed: \033[0;31m1\033[0m                                   ║
+║────────────────────────────────────────────────────────────────║
+║ [0;31m✗ Some tests failed. Check test-results-20260223_115400.txt[0m   ║
+╚════════════════════════════════════════════════════════════════╝
+
+Detailed results saved to: test-results-20260223_115400.txt
+

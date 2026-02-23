@@ -148,6 +148,11 @@ class TiketController extends Controller
             // Rollback transaction
             \Illuminate\Support\Facades\DB::rollBack();
             
+            // Cleanup files if any were uploaded
+            if (isset($nomorTiket)) {
+                Storage::disk('public')->deleteDirectory("complaints/{$nomorTiket}");
+            }
+
             // Handle database constraint violations
             if ($e->getCode() == 23000) {
                 return response()->json([
@@ -163,6 +168,11 @@ class TiketController extends Controller
             // Rollback transaction
             \Illuminate\Support\Facades\DB::rollBack();
             
+            // Cleanup files if any were uploaded
+            if (isset($nomorTiket)) {
+                Storage::disk('public')->deleteDirectory("complaints/{$nomorTiket}");
+            }
+
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal membuat pengaduan: ' . $e->getMessage(),

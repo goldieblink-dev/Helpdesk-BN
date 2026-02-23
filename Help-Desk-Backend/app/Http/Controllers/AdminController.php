@@ -216,6 +216,12 @@ class AdminController extends Controller
                 'success' => true,
                 'message' => 'Password berhasil diubah',
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

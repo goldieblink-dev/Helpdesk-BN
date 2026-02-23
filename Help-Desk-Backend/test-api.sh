@@ -4,7 +4,7 @@
 # Author: HelpDesk Development Team
 # Date: Feb 15, 2026
 
-BASE_URL="http://localhost:8000/api"
+BASE_URL="http://localhost:8001/api"
 RESULTS_FILE="test-results-$(date +%Y%m%d_%H%M%S).txt"
 PASS=0
 FAIL=0
@@ -62,7 +62,7 @@ test_endpoint() {
 echo -e "${YELLOW}Checking server connection...${NC}" | tee -a $RESULTS_FILE
 if ! curl -s "$BASE_URL/kategori" > /dev/null 2>&1; then
     echo -e "${RED}❌ Cannot connect to server at $BASE_URL${NC}" | tee -a $RESULTS_FILE
-    echo "Make sure to run: php artisan serve --port=8000" | tee -a $RESULTS_FILE
+    echo "Make sure to run: php artisan serve --port=8001" | tee -a $RESULTS_FILE
     exit 1
 fi
 echo -e "${GREEN}✓ Server is running${NC}" | tee -a $RESULTS_FILE
@@ -150,7 +150,7 @@ test_endpoint \
 test_endpoint \
     "Get jenis permasalahan for kategori 1" \
     "GET" \
-    "/kategori/1/jenis" \
+    "/kategori/1/jenis-permasalahan" \
     "" \
     "" \
     "200"
@@ -177,7 +177,7 @@ echo "" | tee -a $RESULTS_FILE
 test_endpoint \
     "Get all tickets" \
     "GET" \
-    "/tikets" \
+    "/tiket" \
     "" \
     "" \
     "200"
@@ -185,7 +185,7 @@ test_endpoint \
 test_endpoint \
     "Get ticket statistics" \
     "GET" \
-    "/tikets/stats/report" \
+    "/tiket/stats/report" \
     "" \
     "" \
     "200"
@@ -193,7 +193,7 @@ test_endpoint \
 test_endpoint \
     "Search tickets by phone (081234567890)" \
     "GET" \
-    "/tikets/search/by-phone/081234567890" \
+    "/tiket/search/by-phone/081234567890" \
     "" \
     "" \
     "200"

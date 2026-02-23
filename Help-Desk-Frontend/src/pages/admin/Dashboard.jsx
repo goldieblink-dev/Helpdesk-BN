@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Loader, CheckCircle, Search, Filter, MoreVertical, X, Save, Plus, Image as ImageIcon, ExternalLink, FileText } from 'lucide-react';
+import { Clock, Loader, CheckCircle, Search, Filter, MoreVertical, X, Save, Plus, Image as ImageIcon, ExternalLink, FileText, Trash2 } from 'lucide-react';
 import axios from 'axios';
 
 import { API_BASE_URL, STORAGE_BASE_URL } from '../../api/config';
@@ -32,6 +32,7 @@ const Dashboard = () => {
     lokasi_gedung: '',
     link_url: ''
   });
+  const [createFiles, setCreateFiles] = useState([]);
 
   // Fetch Data
   useEffect(() => {
@@ -149,16 +150,27 @@ const Dashboard = () => {
     try {
       setLoading(true);
 
-      // Create tiket with pelapor data (API will create/use pelapor)
-      const tiketResponse = await axios.post(`${API_BASE_URL}/tiket`, {
-        nama: createForm.nama,
-        no_telepon: createForm.no_telepon,
-        jabatan: createForm.jabatan,
-        kategori_id: parseInt(createForm.kategori_id),
-        jenis_permasalahan_id: parseInt(createForm.jenis_permasalahan_id),
-        deskripsi: createForm.deskripsi,
-        lokasi_gedung: createForm.lokasi_gedung || null,
-        link_url: createForm.link_url || null
+      // Create FormData object for file upload
+      const formDataToSend = new FormData();
+      formDataToSend.append('nama', createForm.nama);
+      formDataToSend.append('no_telepon', createForm.no_telepon);
+      formDataToSend.append('jabatan', createForm.jabatan);
+      formDataToSend.append('kategori_id', parseInt(createForm.kategori_id));
+      formDataToSend.append('jenis_permasalahan_id', parseInt(createForm.jenis_permasalahan_id));
+      formDataToSend.append('deskripsi', createForm.deskripsi);
+
+      if (createForm.lokasi_gedung) formDataToSend.append('lokasi_gedung', createForm.lokasi_gedung);
+      if (createForm.link_url) formDataToSend.append('link_url', createForm.link_url);
+
+      // Add files if any
+      createFiles.forEach((file, index) => {
+        formDataToSend.append(`files[${index}]`, file);
+      });
+
+      const tiketResponse = await axios.post(`${API_BASE_URL}/tiket`, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
       alert('Tiket berhasil dibuat: ' + tiketResponse.data.data.nomor_tiket);
@@ -173,6 +185,7 @@ const Dashboard = () => {
         lokasi_gedung: '',
         link_url: ''
       });
+      setCreateFiles([]);
       setProblemTypes([]);
       fetchTickets();
     } catch (err) {
@@ -224,6 +237,25 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Error updating status:', err);
       alert('Gagal mengupdate status: ' + (err.response?.data?.message || err.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteClick = async (ticket) => {
+    const confirmed = window.confirm(
+      `Apakah Anda yakin ingin menghapus tiket ${ticket.nomor_tiket}?\n\nTindakan ini tidak dapat dibatalkan.`
+    );
+    if (!confirmed) return;
+
+    try {
+      setLoading(true);
+      await axios.delete(`${API_BASE_URL}/tiket/${ticket.nomor_tiket}`);
+      alert('Tiket berhasil dihapus');
+      fetchTickets();
+    } catch (err) {
+      console.error('Error deleting ticket:', err);
+      alert('Gagal menghapus tiket: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }
@@ -392,12 +424,22 @@ const Dashboard = () => {
                       {new Date(ticket.tanggal).toLocaleDateString('id-ID')}
                     </td>
                     <td className="p-4 text-right align-top">
-                      <button
-                        onClick={() => handleEditClick(ticket)}
-                        className="text-blue-600 hover:text-blue-800 font-medium text-sm px-3 py-1.5 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-                      >
-                        Detail / Ubah
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleEditClick(ticket)}
+                          className="text-blue-600 hover:text-blue-800 font-medium text-sm px-3 py-1.5 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                        >
+                          Detail / Ubah
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(ticket)}
+                          className="text-red-600 hover:text-red-800 font-medium text-sm px-3 py-1.5 bg-red-50 hover:bg-red-100 rounded-lg transition-colors flex items-center gap-1"
+                          title="Hapus tiket"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Hapus
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -730,6 +772,24 @@ const Dashboard = () => {
                   className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 ></textarea>
+              </div>
+
+              {/* Upload Files */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">Lampiran Bukti (Opsional)</label>
+                <div className="mt-2 flex flex-col gap-2">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={(e) => setCreateFiles(Array.from(e.target.files))}
+                    className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  />
+                  {createFiles.length > 0 && (
+                    <div className="text-xs text-gray-500 italic">
+                      {createFiles.length} file dipilih
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">

@@ -234,10 +234,8 @@ const FormPengaduan = () => {
         throw new Error('Data kategori belum dimuat. Silakan refresh halaman.');
       }
 
-      // Get jenis_permasalahan_id from selected value
-      // formData.jenisPermasalahan holds the NAME of the problem, we need to find the ID
-      const selectedProblem = problemTypes.find(p => p.nama === formData.jenisPermasalahan);
-      if (!selectedProblem) {
+      const selectedProblemId = formData.jenisPermasalahan;
+      if (!selectedProblemId) {
         throw new Error('Silakan pilih jenis permasalahan yang valid.');
       }
 
@@ -249,7 +247,7 @@ const FormPengaduan = () => {
       formDataToSend.append('no_telepon', formData.noTelepon);
       formDataToSend.append('jabatan', formData.jabatan);
       formDataToSend.append('kategori_id', currentCategory.id);
-      formDataToSend.append('jenis_permasalahan_id', selectedProblem.id);
+      formDataToSend.append('jenis_permasalahan_id', selectedProblemId);
       formDataToSend.append('deskripsi', formData.deskripsi);
 
       if (showLokasi && formData.lokasiGedung) {
@@ -489,7 +487,7 @@ const FormPengaduan = () => {
               >
                 <option value="">{problemPlaceholder}</option>
                 {problemTypes.map((problem) => (
-                  <option key={problem.id} value={problem.nama}>{problem.nama}</option>
+                  <option key={problem.id} value={problem.id}>{problem.nama}</option>
                 ))}
               </select>
             )}
