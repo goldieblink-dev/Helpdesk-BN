@@ -151,18 +151,21 @@ Potential enhancements:
 ## Local Development
 
 ### Backend Setup
+```bash
 cd Help-Desk-Backend
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan serve
+```
 
 ### Frontend Setup
+```bash
 cd Help-Desk-Frontend
 npm install
 npm run dev
-
+```
 ## Deployment Considerations
 
 ### Designed with VPS deployment compatibility:
