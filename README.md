@@ -52,6 +52,7 @@ This approach ensures:
 ---
 
 ## Repository Structure
+```bash
 Helpdesk-BN/
 │
 ├── Help-Desk-Backend/ # Laravel API Layer
@@ -66,7 +67,7 @@ Helpdesk-BN/
 │ └── ...
 │
 └── README.md
-
+```
 
 Although maintained in a single repository, the system is architecturally modular and can be deployed independently if required.
 
